@@ -12,16 +12,18 @@ class AuthService {
     try {
 
       // mail 확인안하고 로그인
-      // await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
-      // User user = (await firebaseAuth.signInWithEmailAndPassword(
-      //     email: email, password: password))
-      //     .user!;
-      //
-      // if (user != null) {
+      User user = (await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password)
+      ).user!;
+
+      if (user != null) {
          return true;
-      // }
+      }
+
     } on FirebaseAuthException catch (e) {
+      Global.log.wtf(e.message.toString());
       return e.message;
     }
   }

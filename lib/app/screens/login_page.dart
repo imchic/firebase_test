@@ -22,8 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   AppController app = Get.find();
   LogController log = Get.find();
 
-  bool get isDarkMode => Get.find<AppController>().isDarkMode.value;
-
   final formKey = GlobalKey<FormState>();
   bool isVisible = true;
   bool _isLoading = false;
@@ -135,9 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                       login();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: app.isDarkMode.value
-                          ? AppTheme.darkTheme.colorScheme.primary
-                          : AppTheme.lightTheme.colorScheme.primary,
+                      // backgroundColor: app.isDarkMode.value
+                      //     ? AppTheme.darkTheme.colorScheme.primary
+                      //     : AppTheme.lightTheme.colorScheme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14.0),
                       ),

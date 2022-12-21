@@ -1,14 +1,11 @@
-import 'package:demo/app/controller/log_controller.dart';
 import 'package:demo/app/screens/login_page.dart';
 import 'package:demo/app/services/auth_service.dart';
 import 'package:demo/app/services/helper.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controller/app_controller.dart';
-import '../values/theme.dart';
 import 'home_page.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -170,9 +167,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 register();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: app.isDarkMode.value
-                                    ? AppTheme.darkTheme.colorScheme.primary
-                                    : AppTheme.lightTheme.colorScheme.primary,
+                                // backgroundColor: app.isDarkMode.value
+                                //     ? AppTheme.darkTheme.colorScheme.primary
+                                //     : AppTheme.lightTheme.colorScheme.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.0),
                                 ),

@@ -1,11 +1,11 @@
 {
-    "name": "demo",
-    "short_name": "demo",
+    "name": "sh",
+    "short_name": "sh",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "sh 데모",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
