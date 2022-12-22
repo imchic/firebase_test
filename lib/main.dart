@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:demo/app/constants/global.dart';
 import 'package:demo/app/controller/log_controller.dart';
 import 'package:demo/app/values/theme.dart';
@@ -32,132 +34,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var flag = false;
+
   @override
   Widget build(BuildContext context) {
     Get.put(LogController());
-
-    getDate();
 
     return Scaffold(
       appBar: capiAppBar(),
       body: SafeArea(
         child: Column(
-          children: [
-            getSysdashboardTxt(),
-            getSysDateTxt(),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Center(
-            //         child: Container(
-            //       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-            //       decoration: BoxDecoration(
-            //         boxShadow: [
-            //           BoxShadow(
-            //             color: Colors.grey.withOpacity(0.1),
-            //             spreadRadius: 5,
-            //             blurRadius: 7,
-            //             offset:
-            //                 const Offset(0, 3), // changes position of shadow
-            //           ),
-            //         ],
-            //         color: Get.isDarkMode ? Colors.black : Colors.white,
-            //         //color: Colors.red,
-            //         borderRadius: BorderRadius.circular(10),
-            //       ),
-            //       child: Center(
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: [
-            //             Text(
-            //               '조사현황',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 10),
-            //             Text(
-            //               '대상가구수',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '963',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '|',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '완료',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '88',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '|',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '미완료',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '93',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             Text(
-            //               '|',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '조사현황',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //             SizedBox(width: 5),
-            //             Text(
-            //               '74',
-            //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-            //                 color: Get.isDarkMode ? Colors.white : Colors.black,
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ))
-            //   ],
-            // ),
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            setDateTextAndUserInfo(),
+            setDashboardTextImage(),
+            setSurveyDataInfo(context),
           ],
         ),
       ),
@@ -165,12 +57,155 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+// 대시보드 텍스트 이미지
+setDashboardTextImage() {
+  return Row(
+    children: [
+      Container(
+        margin: EdgeInsets.only(left: 50),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Image.asset(
+            'assets/images/img_dashboard_center_text.png',
+            width: 200,
+            height: 200,
+          ),
+          SizedBox(width: 20),
+          Image.asset(
+            'assets/images/img_dashboard_right.png',
+            width: 350,
+          ),
+        ]),
+      ),
+    ],
+  );
+}
+
+// 조사결과
+setSurveyDataInfo(BuildContext context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Center(
+          child: Container(
+        // display with만큼
+        width: MediaQuery.of(context).size.width * 0.85,
+        padding: EdgeInsets.all(30),
+        margin: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+          color: Get.isDarkMode ? Colors.black : Colors.white,
+          //color: Colors.red,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '조사현황',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                '대상가구수',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '963',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '|',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '완료',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '88',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '|',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '미완료',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '93',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              Text(
+                '|',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              SizedBox(width: 5),
+              Text(
+                '조사현황',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+              SizedBox(width: 5),
+              Text(
+                '74',
+                style: AppTheme.textTheme.bodyMedium?.copyWith(
+                  color: Get.isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ))
+    ],
+  );
+}
+
+/// 앱 바
 capiAppBar() {
   return AppBar(
-      titleSpacing: 0.0,
       automaticallyImplyLeading: true,
       leading: Row(
-        children: [
+        children: <Widget>[
           IconButton(
             icon: const Icon(Icons.person_outlined),
             onPressed: () {
@@ -222,41 +257,153 @@ capiAppBar() {
       ));
 }
 
-getSysdashboardTxt() {
-  return Row(
-    // 좌측 상단에 텍스트
-    mainAxisAlignment: MainAxisAlignment.start,
+getStatusExample() {
+  // switch with controller value
+  // Switch(
+  //     value: flag,
+  //     onChanged: (value) {
+  //       setState(() {
+  //         flag = value;
+  //         if (flag) {
+  //           Get.changeThemeMode(ThemeMode.dark);
+  //         } else {
+  //           Get.changeThemeMode(ThemeMode.light);
+  //         }
+  //       });
+  //     }),
+  // ElevatedButton(
+  //     onPressed: () => setState(() {
+  //           flag = !flag;
+  //         }),
+  //     child: Text('switch')),
+}
+
+/// 시스템 대시보드 텍스트
+setDateTextAndUserInfo() {
+  return Column(
     children: [
-      Center(
-          child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Row(children: [
-          Text('Cenus Dashboard',
-              style: AppTheme.textTheme.headline4?.copyWith(
-                color: Get.isDarkMode ? Colors.white : Colors.black,
-              )),
-        ]),
-      ))
+      Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.only(top: 30, left: 60, right: 60),
+        child: Row(
+          children: [
+            // left
+            Row(
+              children: [
+                Text('Census System',
+                    style: AppTheme.textTheme.headline4?.copyWith(
+                        color: Get.isDarkMode
+                            ? AppTheme.lightTheme.primaryColor
+                            : AppTheme.darkTheme.primaryColor,
+                        fontWeight: FontWeight.w700)),
+                SizedBox(width: 15),
+                Text('|',
+                    style: AppTheme.textTheme.bodyMedium?.copyWith(
+                        color: Get.isDarkMode
+                            ? AppTheme.lightTheme.colorScheme.surface
+                            : AppTheme.darkTheme.colorScheme.surface,
+                        fontWeight: FontWeight.w700)),
+                SizedBox(width: 15),
+              ],
+            ),
+            // center
+            Expanded(
+              child: Row(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(setDate(),
+                      style: AppTheme.textTheme.bodyMedium?.copyWith(
+                          color: Get.isDarkMode
+                              ? AppTheme.lightTheme.colorScheme.surface
+                              : AppTheme.darkTheme.colorScheme.surface,
+                          fontWeight: FontWeight.w700)),
+                ],
+              ),
+            ),
+
+            // right
+            Row(
+              children: [
+                Icon(Icons.person_outline,
+                    color: Get.isDarkMode
+                        ? AppTheme.lightTheme.primaryColor
+                        : AppTheme.darkTheme.primaryColor),
+                Text('김철수',
+                    style: AppTheme.textTheme.bodyMedium?.copyWith(
+                        color: Get.isDarkMode
+                            ? AppTheme.lightTheme.colorScheme.outline
+                            : AppTheme.darkTheme.colorScheme.outline,
+                        fontWeight: FontWeight.w700)),
+                SizedBox(width: 5),
+                Text('사원',
+                    style: AppTheme.textTheme.bodyMedium?.copyWith(
+                      color: Get.isDarkMode
+                          ? AppTheme.lightTheme.primaryColor
+                          : AppTheme.darkTheme.primaryColor,
+                    )),
+              ],
+            ),
+          ],
+        ),
+      )
+
+      // Container(
+      //   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+      //   child: Row(
+      //     children: [
+      //       Text('Census System',
+      //           style: AppTheme.textTheme.headline4?.copyWith(
+      //             color: Get.isDarkMode
+      //                 ? AppTheme.lightTheme.primaryColor
+      //                 : AppTheme.darkTheme.primaryColor,
+      //           )),
+      //     ],
+      //   ),
+      // ),
+      // SizedBox(height: 10),
+      // Container(
+      //   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+      //   child: Row(
+      //     children: [
+      //       Row(
+      //         children: [
+      //           Text(setDate(),
+      //               style: AppTheme.textTheme.bodyMedium?.copyWith(
+      //                 color: Get.isDarkMode
+      //                     ? AppTheme.lightTheme.colorScheme.surface
+      //                     : AppTheme.darkTheme.colorScheme.surface,
+      //               )),
+      //         ],
+      //       ),
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.end,
+      //         children: [
+      //           Text('  |  '),
+      //           Icon(
+      //             Icons.person,
+      //             color: Get.isDarkMode
+      //                 ? AppTheme.lightTheme.colorScheme.surface
+      //                 : AppTheme.darkTheme.colorScheme.surface,
+      //           ),
+      //           Text(' 홍길동 조사원님 환영합니다.'),
+      //           SizedBox(width: 10),
+      //           Icon(
+      //             Icons.cloud,
+      //             color: Get.isDarkMode
+      //                 ? AppTheme.lightTheme.colorScheme.surface
+      //                 : AppTheme.darkTheme.colorScheme.surface,
+      //           )
+      //         ],
+      //       )
+      //     ],
+      //   ),
+      // ),
     ],
   );
 }
 
-getSysDateTxt() {
-  return Row(children: [
-    Container(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-      child: Row(children: [
-        Text('${getDate()}',
-            style: AppTheme.textTheme.headline6?.copyWith(
-              color: Get.isDarkMode ? Colors.white : Colors.black,
-              fontWeight: FontWeight.w700,
-            )),
-      ]),
-    )
-  ]);
-}
-
-getDate() {
+// 날짜 가져오기
+setDate() {
   DateTime dateToday = DateTime.now();
   String date = dateToday.toString().substring(0, 10);
 
@@ -301,7 +448,26 @@ getDate() {
   }
 
   var sumTimeStr = '$ampm $hour:$minute';
-  Global.log.d('sumTimeStr: $sumTimeStr');
+  //Global.log.d('sumTimeStr: $sumTimeStr');
+
+  // 1분마다 시간 갱신
+  Timer.periodic(Duration(seconds: 60), (timer) {
+    DateTime dateToday = DateTime.now();
+    String time = dateToday.toString().substring(11, 19);
+
+    // 24hour -> 12hour convert
+    String hour = time.substring(0, 2);
+    String minute = time.substring(3, 5);
+    String second = time.substring(6, 8);
+    String ampm = '오전';
+    if (int.parse(hour) > 12) {
+      hour = (int.parse(hour) - 12).toString();
+      ampm = '오후';
+    }
+
+    var sumTimeStr = '$ampm $hour:$minute';
+    //Global.log.wtf('sumTimeStr: $sumTimeStr');
+  });
 
   return "${date.replaceAll("-", ".")}($dayString) $sumTimeStr";
 }

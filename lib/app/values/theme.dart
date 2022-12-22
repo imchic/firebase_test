@@ -21,94 +21,82 @@ class AppTheme {
   static const Color dismissibleBackground = Color(0xFF364A54);
   static const Color chipBackground = Color(0xFFEEF1F3);
   static const Color spacer = Color(0xFFF2F2F2);
-  static const String fontName = 'NanumSquare';
+  //static const String fontName = 'NanumSquare';
+  static const String fontName = 'Pretendard';
 
   static const TextTheme textTheme = TextTheme(
     headline1: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 96,
       letterSpacing: -1.5,
       //color: Get.isDarkMode ? Colors.white : darkText,
     ),
     headline2: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 60,
       letterSpacing: -0.5,
       //color: darkText,
     ),
     headline3: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 48,
       //color: darkText,
     ),
     headline4: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 34,
       letterSpacing: 0.25,
       //color: darkText,
     ),
     headline5: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 24,
       //color: darkText,
     ),
     headline6: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 20,
       letterSpacing: 0.15,
       //color: darkText,
     ),
     subtitle1: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 16,
       letterSpacing: 0.15,
       //color: darkText,
     ),
     subtitle2: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 14,
       letterSpacing: 0.1,
       //color: darkText,
     ),
     bodyText1: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w400,
       fontSize: 16,
       letterSpacing: 0.5,
       //color: darkText,
     ),
     bodyText2: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w400,
       fontSize: 14,
       letterSpacing: 0.25,
       //color: darkText,
     ),
     button: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w700,
       fontSize: 14,
       letterSpacing: 1.25,
       //color: darkText,
     ),
     caption: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w400,
       fontSize: 12,
       letterSpacing: 0.4,
       //color: darkText,
     ),
     overline: TextStyle(
       fontFamily: fontName,
-      fontWeight: FontWeight.w400,
       fontSize: 12,
       letterSpacing: 1.5,
       //color: darkText,
@@ -134,7 +122,8 @@ class AppTheme {
   }
 
   // custom themeMode
-  static ThemeMode get themeMode => Get.isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  static ThemeMode get themeMode =>
+      Get.isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
   static final lightTheme = ThemeData(
       textTheme: _buildTextTheme(ThemeData.light().textTheme),
@@ -168,8 +157,7 @@ class AppTheme {
         inversePrimary: Color(0xFF52D7EF),
         shadow: Color(0xFF000000),
         surfaceTint: Color(0xFF006877),
-      )
-  );
+      ));
 
   static final darkTheme = ThemeData(
       textTheme: _buildTextTheme(ThemeData.dark().textTheme),
