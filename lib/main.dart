@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,10 +21,12 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
+
+var _brightness = WidgetsBinding.instance.window.platformBrightness;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -33,12 +35,34 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  var flag = false;
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    Get.put(LogController());
+    WidgetsBinding.instance.addObserver(this);
+    Global.log.v('init state');
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    Global.log.v('didChangeAppLifecycleState');
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+
+    Global.log.v('didChangePlatformBrightness');
+    
+    setState(() {
+      _brightness = WidgetsBinding.instance.window.platformBrightness;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Get.put(LogController());
+    //Get.put(LogController());
 
     return Scaffold(
       appBar: capiAppBar(),
@@ -62,19 +86,21 @@ setDashboardTextImage() {
   return Row(
     children: [
       Container(
-        margin: EdgeInsets.only(left: 50),
+        margin: const EdgeInsets.only(left: 50),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Image.asset(
-            'assets/images/img_dashboard_center_text.png',
-            width: 200,
-            height: 200,
-          ),
-          SizedBox(width: 20),
-          Image.asset(
-            'assets/images/img_dashboard_right.png',
-            width: 350,
-          ),
+          Image.asset('assets/images/img_dashboard_center_text.png',
+              width: 200,
+              height: 200,
+              color: _brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white),
+          const SizedBox(width: 20),
+          Image.asset('assets/images/img_dashboard_right.png',
+              width: 350,
+              color: Get.isDarkMode
+                  ? AppTheme.lightTheme.colorScheme.surface
+                  : AppTheme.darkTheme.colorScheme.surface),
         ]),
       ),
     ],
@@ -90,8 +116,8 @@ setSurveyDataInfo(BuildContext context) {
           child: Container(
         // display with만큼
         width: MediaQuery.of(context).size.width * 0.85,
-        padding: EdgeInsets.all(30),
-        margin: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(30),
+        margin: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -101,96 +127,83 @@ setSurveyDataInfo(BuildContext context) {
               offset: const Offset(0, 3), // changes position of shadow
             ),
           ],
-          color: Get.isDarkMode ? Colors.black : Colors.white,
-          //color: Colors.red,
+          color: Get.isDarkMode
+              ? AppTheme.darkTheme.colorScheme.tertiary
+              : AppTheme.lightTheme.colorScheme.tertiary,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 '조사현황',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w700, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 10),
-              Text(
+              const SizedBox(width: 10),
+              const Text(
                 '대상가구수',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '963',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '|',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '완료',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '88',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
-                '|',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
-              ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text('|',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.nearlyWhite)),
+              const SizedBox(width: 5),
+              const Text(
                 '미완료',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '93',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              Text(
+              const Text(
                 '|',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '조사현황',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
-              SizedBox(width: 5),
-              Text(
+              const SizedBox(width: 5),
+              const Text(
                 '74',
-                style: AppTheme.textTheme.bodyMedium?.copyWith(
-                  color: Get.isDarkMode ? Colors.white : Colors.black,
-                ),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: AppTheme.nearlyWhite),
               ),
             ],
           ),
@@ -212,7 +225,7 @@ capiAppBar() {
               Get.back();
             },
           ),
-          Image(
+          const Image(
               image: AssetImage('assets/images/sos.png'),
               width: 80,
               height: 50),
@@ -228,7 +241,7 @@ capiAppBar() {
                   Global.log.i('timer button pressed');
                 },
                 icon: const Icon(Icons.timer_outlined)),
-            Text('55:29'),
+            const Text('55:29'),
             IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
@@ -247,7 +260,7 @@ capiAppBar() {
             width: 100,
             height: 55,
           ),
-          SizedBox(width: 10.0),
+          const SizedBox(width: 10.0),
           Image.asset(
             'assets/images/cesnus_txt.png',
             width: 100,
@@ -257,6 +270,7 @@ capiAppBar() {
       ));
 }
 
+// test code
 getStatusExample() {
   // switch with controller value
   // Switch(
@@ -283,27 +297,21 @@ setDateTextAndUserInfo() {
   return Column(
     children: [
       Container(
-        padding: EdgeInsets.all(10),
-        margin: EdgeInsets.only(top: 30, left: 60, right: 60),
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 30, left: 60, right: 60),
         child: Row(
           children: [
             // left
             Row(
               children: [
                 Text('Census System',
-                    style: AppTheme.textTheme.headline4?.copyWith(
-                        color: Get.isDarkMode
-                            ? AppTheme.lightTheme.primaryColor
-                            : AppTheme.darkTheme.primaryColor,
-                        fontWeight: FontWeight.w700)),
-                SizedBox(width: 15),
+                    style: AppTheme.textTheme.headline4
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(width: 15),
                 Text('|',
-                    style: AppTheme.textTheme.bodyMedium?.copyWith(
-                        color: Get.isDarkMode
-                            ? AppTheme.lightTheme.colorScheme.surface
-                            : AppTheme.darkTheme.colorScheme.surface,
-                        fontWeight: FontWeight.w700)),
-                SizedBox(width: 15),
+                    style: AppTheme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(width: 15),
               ],
             ),
             // center
@@ -312,11 +320,8 @@ setDateTextAndUserInfo() {
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(setDate(),
-                      style: AppTheme.textTheme.bodyMedium?.copyWith(
-                          color: Get.isDarkMode
-                              ? AppTheme.lightTheme.colorScheme.surface
-                              : AppTheme.darkTheme.colorScheme.surface,
-                          fontWeight: FontWeight.w700)),
+                      style: AppTheme.textTheme.bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.w700)),
                 ],
               ),
             ),
@@ -324,80 +329,19 @@ setDateTextAndUserInfo() {
             // right
             Row(
               children: [
-                Icon(Icons.person_outline,
-                    color: Get.isDarkMode
-                        ? AppTheme.lightTheme.primaryColor
-                        : AppTheme.darkTheme.primaryColor),
+                const Icon(Icons.person_outline),
                 Text('김철수',
-                    style: AppTheme.textTheme.bodyMedium?.copyWith(
-                        color: Get.isDarkMode
-                            ? AppTheme.lightTheme.colorScheme.outline
-                            : AppTheme.darkTheme.colorScheme.outline,
-                        fontWeight: FontWeight.w700)),
-                SizedBox(width: 5),
+                    style: AppTheme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(width: 5),
                 Text('사원',
-                    style: AppTheme.textTheme.bodyMedium?.copyWith(
-                      color: Get.isDarkMode
-                          ? AppTheme.lightTheme.primaryColor
-                          : AppTheme.darkTheme.primaryColor,
-                    )),
+                    style: AppTheme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
               ],
             ),
           ],
         ),
       )
-
-      // Container(
-      //   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-      //   child: Row(
-      //     children: [
-      //       Text('Census System',
-      //           style: AppTheme.textTheme.headline4?.copyWith(
-      //             color: Get.isDarkMode
-      //                 ? AppTheme.lightTheme.primaryColor
-      //                 : AppTheme.darkTheme.primaryColor,
-      //           )),
-      //     ],
-      //   ),
-      // ),
-      // SizedBox(height: 10),
-      // Container(
-      //   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-      //   child: Row(
-      //     children: [
-      //       Row(
-      //         children: [
-      //           Text(setDate(),
-      //               style: AppTheme.textTheme.bodyMedium?.copyWith(
-      //                 color: Get.isDarkMode
-      //                     ? AppTheme.lightTheme.colorScheme.surface
-      //                     : AppTheme.darkTheme.colorScheme.surface,
-      //               )),
-      //         ],
-      //       ),
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.end,
-      //         children: [
-      //           Text('  |  '),
-      //           Icon(
-      //             Icons.person,
-      //             color: Get.isDarkMode
-      //                 ? AppTheme.lightTheme.colorScheme.surface
-      //                 : AppTheme.darkTheme.colorScheme.surface,
-      //           ),
-      //           Text(' 홍길동 조사원님 환영합니다.'),
-      //           SizedBox(width: 10),
-      //           Icon(
-      //             Icons.cloud,
-      //             color: Get.isDarkMode
-      //                 ? AppTheme.lightTheme.colorScheme.surface
-      //                 : AppTheme.darkTheme.colorScheme.surface,
-      //           )
-      //         ],
-      //       )
-      //     ],
-      //   ),
-      // ),
     ],
   );
 }
@@ -451,7 +395,7 @@ setDate() {
   //Global.log.d('sumTimeStr: $sumTimeStr');
 
   // 1분마다 시간 갱신
-  Timer.periodic(Duration(seconds: 60), (timer) {
+  Timer.periodic(const Duration(seconds: 60), (timer) {
     DateTime dateToday = DateTime.now();
     String time = dateToday.toString().substring(11, 19);
 
